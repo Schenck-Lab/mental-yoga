@@ -1,0 +1,123 @@
+/* =========================
+   RotationControls Panel
+   ========================= */
+
+.panelCard.rotPanel {
+  width: 88%;
+  margin-top: 4px;
+
+  background: rgba(83, 113, 147, 0.92);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header */
+.panelCard.rotPanel .panelCard__header {
+  padding: 8px 0;
+  background: rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panelCard.rotPanel .panelCard__title {
+  color: rgba(255, 255, 255, 1);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Body */
+.panelCard.rotPanel .panelCard__body {
+  padding: 10px;
+}
+
+/* =========================
+   Grid Layout
+   ========================= */
+
+.rotGrid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 5fr;
+  grid-template-rows: repeat(2, 38px);
+  gap: 6px;
+}
+
+/* =========================
+   Buttons (shared)
+   ========================= */
+
+.rotBtn,
+.fnBtn {
+  width: 100%;
+  height: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+
+  font: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: transform 80ms ease, filter 120ms ease, background 120ms ease;
+}
+
+/* Shared interaction states */
+.rotBtn:active,
+.fnBtn:active {
+  transform: translateY(1px);
+}
+
+.rotBtn:focus-visible,
+.fnBtn:focus-visible {
+  outline: 2px solid rgba(160, 210, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.rotBtn:disabled,
+.fnBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================
+   rotBtn (icon buttons)
+   ========================= */
+
+.rotBtn {
+  background: rgba(73, 84, 184, 0.92);
+  color: rgba(255, 255, 255, 1);
+
+  font-size: 14px;
+}
+
+.rotBtn:hover {
+  /* keep your chosen final hover background */
+  background: rgba(184, 180, 207, 0.893);
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* =========================
+   fnBtn (wide function buttons)
+   ========================= */
+
+.fnBtn {
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 12px;
+}
+
+.fnBtn:not(:disabled):hover {
+  background: rgba(141, 98, 80, 0.92);
+  color: rgba(255, 255, 255, 1);
+
+  font-size: 13px;
+  font-weight: 900;
+}
+

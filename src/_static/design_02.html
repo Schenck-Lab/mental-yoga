@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mental Yoga — Question UI Mock (Viewport Left)</title>
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --panel: #121522;
+      --text:#e8ecff;
+      --muted:#b7bfdc;
+      --accent:#6ea8fe;
+      --border: rgba(255,255,255,0.10);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --gap: 12px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(110,168,254,.18), transparent 60%),
+                  radial-gradient(900px 600px at 80% 30%, rgba(76,217,100,.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+    }
+
+    /* App layout */
+    .app{
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    /* Topbar (keep current style) */
+    header{
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,12,18,.7);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: var(--gap);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .logo{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(110,168,254,.9), rgba(76,217,100,.7));
+      box-shadow: var(--shadow);
+    }
+    .brand h1{
+      font-size: 15px;
+      margin:0;
+      letter-spacing:.2px;
+      font-weight: 700;
+    }
+    .brand .sub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .statusPills{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      border: 1px solid var(--border);
+      background: rgba(18,21,34,.75);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      white-space: nowrap;
+    }
+    .pill strong{ color: var(--text); font-weight: 700; }
+
+    /* Main */
+    main{
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 14px 18px;
+      display:grid;
+      grid-template-columns: 1fr 380px; /* Viewport left, SidePane right */
+      gap: 14px;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* Generic card */
+    .card{
+      background: rgba(18,21,34,.78);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      min-width: 0;
+    }
+    .cardHeader{
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      background: rgba(10,12,22,.35);
+    }
+    .cardHeader h2{
+      font-size: 13px;
+      margin:0;
+      color: var(--text);
+      letter-spacing:.2px;
+    }
+    .tag{
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      white-space: nowrap;
+    }
+    .cardBody{
+      padding: 12px 14px;
+      min-width: 0;
+    }
+
+    /* Viewport */
+    .viewport{
+      display:flex;
+      flex-direction:column;
+      min-width: 0;
+    }
+    .viewportBody{
+      position: relative;
+      padding: 12px;
+      flex: 1;
+      min-height: 560px;
+    }
+    canvas{
+      width: 100%;
+      height: 100%;
+      min-height: 560px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(900px 500px at 50% 20%, rgba(110,168,254,.12), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      display:block;
+    }
+    .overlayBadge{
+      position:absolute;
+      left: 22px;
+      top: 20px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(8px);
+    }
+
+    /* SidePane */
+    .sidepane{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      min-width: 0;
+    }
+    .sidepaneInner{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      height: 100%;
+      min-height: 560px;
+    }
+
+    /* Question panel */
+    .promptTitle{
+      font-size: 18px;
+      line-height: 1.25;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+    }
+    .promptText{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    /* Action panel (minimal) */
+    .btnRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button{
+      appearance:none;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.15);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor:pointer;
+    }
+    button.primary{
+      background: rgba(110,168,254,.22);
+      border-color: rgba(110,168,254,.45);
+    }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      main{ grid-template-columns: 1fr; }
+      .viewportBody{ min-height: 420px; }
+      canvas{ min-height: 420px; }
+      .sidepaneInner{ min-height: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>Mental Yoga</h1>
+            <div class="sub">Game Stage — Question</div>
+          </div>
+        </div>
+
+        <div class="statusPills" aria-label="session status">
+          <div class="pill"><span>Participant</span> <strong>user@example.com</strong></div>
+          <div class="pill"><span>Level</span> <strong>3 / 6</strong></div>
+          <div class="pill"><span>Question</span> <strong>2</strong></div>
+          <!-- Timer pill optional; keep in markup for quick toggling -->
+          <div class="pill" style="display:none;"><span>Time Left</span> <strong>04:12</strong></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT: Viewport -->
+      <section class="card viewport">
+        <div class="cardHeader">
+          <h2>Viewport</h2>
+          <span class="tag">R3F Canvas Placeholder</span>
+        </div>
+
+        <div class="viewportBody">
+          <div class="overlayBadge">3D Scene</div>
+          <canvas id="sceneCanvas" width="1200" height="700" aria-label="3D scene canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- RIGHT: SidePane (Question + Action) -->
+      <aside class="sidepane">
+        <div class="sidepaneInner">
+          <section class="card">
+            <div class="cardHeader">
+              <h2>Question</h2>
+              <span class="tag">Answer in the scene</span>
+            </div>
+            <div class="cardBody">
+              <div class="promptTitle">Overlapping Edges</div>
+              <p class="promptText">
+                A cube net is shown in the 3D scene. One edge is marked. Identify the other edge that overlaps with it when folded.
+              </p>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="cardHeader">
+              <h2>Actions</h2>
+              <span class="tag">Minimal</span>
+            </div>
+            <div class="cardBody">
+              <div class="btnRow">
+                <button class="primary" disabled>Submit</button>
+                <button>Clear</button>
+                <button>Help</button>
+                <button>Exit</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

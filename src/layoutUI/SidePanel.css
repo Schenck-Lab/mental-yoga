@@ -1,0 +1,347 @@
+/* layoutUI/SidePanel.css */
+
+:root {
+  --panel-header-h: 40px;
+  --panel-pad-x: 14px;
+  --panel-pad-y: 14px;
+  --panel-gap: 14px;
+
+  /* Button colors */
+  --confirm-bg: rgb(50, 66, 156);
+  --confirm-border: rgb(120, 140, 255);
+
+  --enter-bg: rgb(82, 50, 156);
+  --enter-border: rgb(132, 105, 182);
+
+  --next-bg: rgb(66, 138, 132);
+  --next-bg-hover: rgb(78, 158, 150);
+  --next-bg-active: rgb(56, 118, 112);
+  --next-border: rgba(255, 255, 255, 0.28);
+}
+
+/* Two fixed, equal-height blocks */
+.sidePanel {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--panel-gap);
+}
+
+/* ================= AnswerPanel ================= */
+
+.answerPanel {
+  min-height: 0;
+  min-width: 0;
+
+  display: grid;
+  grid-template-rows: var(--panel-header-h) 1fr auto;
+
+  border-radius: var(--radius-lg, 18px);
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.answerPanel__header {
+  height: var(--panel-header-h);
+  padding: 0 var(--panel-pad-x);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.answerPanel__title {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.answerPanel__body {
+  min-height: 0;
+  padding: var(--panel-pad-y) var(--panel-pad-x);
+  padding-bottom: 0px;
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.answerPanel__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+.answerPanel__sep {
+  height: 1px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 12px 0;
+}
+
+/* Confirm button placement */
+.answerPanel > .btn--confirm {
+  justify-self: center;
+  align-self: center;
+  margin: 12px 0 16px 0;
+}
+
+/* ================= ReviewPanel ================= */
+
+.reviewPanel {
+  min-height: 0;
+  min-width: 0;
+
+  display: grid;
+  grid-template-rows: var(--panel-header-h) auto auto auto;
+
+  border-radius: var(--radius-lg, 18px);
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reviewPanel__header {
+  height: var(--panel-header-h);
+  padding: 0 var(--panel-pad-x);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(255, 255, 255, 0.06);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reviewPanel__title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+/* ================= Buttons ================= */
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.361);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: transform 80ms ease, background 120ms ease, border-color 120ms ease, filter 120ms ease;
+}
+
+/* Generic hover / active */
+.btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Generic disabled (neutral buttons) */
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  filter: grayscale(0.2);
+}
+
+/* ---------- Confirm ---------- */
+
+.btn--confirm {
+  width: 80%;
+  background: var(--confirm-bg);
+  border-color: var(--confirm-border);
+  color: #fff;
+}
+
+.btn--confirm:hover {
+  background: rgb(60, 80, 190);
+  border-color: rgb(150, 165, 255);
+}
+
+.btn--confirm:active {
+  background: rgb(45, 60, 145);
+}
+
+/* ✅ Keep "blue identity" when disabled */
+.btn--confirm:disabled,
+.btn--confirm[aria-disabled='true'] {
+  opacity: 0.75; /* don't wash it out */
+  background: rgba(50, 66, 156, 0.45);      /* still blue, just muted */
+  border-color: rgba(120, 140, 255, 0.35);  /* still blue border */
+  color: rgba(255, 255, 255, 0.55);
+  filter: grayscale(0.15);
+}
+
+/* ---------- Enter Level ---------- */
+
+.btn--enterLevel {
+  width: 80%;
+  background: var(--enter-bg);
+  border-color: var(--enter-border);
+  color: #fff;
+
+  justify-self: center;
+  align-self: center;
+  margin-bottom: 16px;
+}
+
+.btn--enterLevel:hover {
+  background: rgb(95, 62, 175);
+  border-color: rgb(155, 125, 205);
+}
+
+.btn--enterLevel:active {
+  background: rgb(68, 40, 132);
+  border-color: rgb(115, 90, 160);
+  transform: translateY(1px);
+}
+
+/* ---------- Next (ReviewPanel) ---------- */
+
+.reviewPanel > .btn--next {
+  justify-self: center;
+  align-self: center;
+  margin: 0px 0 14px 0;
+  width: 80%;
+
+  background: var(--next-bg);
+  color: rgba(255, 255, 255);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reviewPanel > .btn--next:hover {
+  background: var(--next-bg-hover);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.reviewPanel > .btn--next:active {
+  background: var(--next-bg-active);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(1px);
+}
+
+
+/* ================= Panel Disable (global) ================= */
+
+.panelCard {
+  position: relative; /* ensure overlay positioning works */
+}
+
+.panelCard.isDisabled {
+  opacity: 0.45;
+  filter: grayscale(0.7);
+}
+
+/* Overlay eats ALL pointer interactions inside the panel */
+.panelCard.isDisabled::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.10);
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
+/* ================= Level Intro ================= */
+
+.levelIntroPanel {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+
+  display: grid;
+  grid-template-rows: var(--panel-header-h) 1fr auto;
+
+  border-radius: var(--radius-lg, 18px);
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.levelIntroPanel__header {
+  height: var(--panel-header-h);
+  padding: 0 var(--panel-pad-x);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.levelIntroPanel__title {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+@keyframes introFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.levelIntroPanel__body {
+  min-height: 0;
+  padding: var(--panel-pad-y) var(--panel-pad-x);
+  padding-bottom: 0px;
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-size: 14px;
+  line-height: 1.5;
+
+  animation: introFadeUp 320ms ease-out both;
+}
+
+.levelIntroPanel__sep {
+  height: 1.5px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 18px 0;
+}

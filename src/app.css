@@ -1,0 +1,15 @@
+/* App layout frame: Topbar + Main */
+
+.app_shell {
+    height: 100dvh; /* use 100vh if you prefer */
+    display: grid;
+    grid-template-rows: var(--topbar-h, 56px) 1fr;
+    min-height: 0;
+}
+
+.app_main {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}

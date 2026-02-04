@@ -1,0 +1,152 @@
+/* app/src/ui/PlayerSlider.css */
+
+.playerSlider {
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.70);
+  --line: rgba(255, 255, 255, 0.10);
+
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  --accent: #3f6bff;
+  --radius: 10px;
+
+  color: var(--text);
+}
+
+/* ===== Separator with centered text (aligned with ModeSelection) ===== */
+.playerSlider__sep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0px 12px 12px 12px;
+}
+
+.playerSlider__sep::before,
+.playerSlider__sep::after {
+  content: '';
+  height: 1px;
+  background: var(--line);
+  flex: 1;
+}
+
+.playerSlider__sepText {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ===== Card container ===== */
+.playerSlider__card {
+  margin: 0 12px 12px 12px;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  border: 0px solid var(--card-border);
+
+  display: grid;
+  gap: 0px;
+}
+
+/* ===== Checkbox row ===== */
+.playerSlider__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+  margin: 5px 0px 12px 0px;
+  width: 35%;
+}
+
+.playerSlider__check input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.playerSlider__range {
+  width: 100%;
+  margin: 0;
+}
+
+/* Hover state: show grab hand */
+.playerSlider__range::-webkit-slider-thumb {
+  cursor: grab;
+}
+
+.playerSlider__range::-moz-range-thumb {
+  cursor: grab;
+}
+
+/* Active dragging state */
+.playerSlider__range:active::-webkit-slider-thumb {
+  cursor: grabbing;
+}
+
+.playerSlider__range:active::-moz-range-thumb {
+  cursor: grabbing;
+}
+
+/* Disabled range: show not-allowed cursor */
+.playerSlider__range:disabled {
+  cursor: not-allowed;
+}
+
+/* Disabled thumb (WebKit) */
+.playerSlider__range:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+
+/* Disabled thumb (Firefox) */
+.playerSlider__range:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+}
+
+/* ------------- Check box ------------- */
+.playerSlider__checkText {
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  transition: color 120ms ease, text-shadow 120ms ease;
+}
+
+.playerSlider__check input[type='checkbox']:checked + .playerSlider__checkText {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0.4px 0 0 currentColor,
+   -0.4px 0 0 currentColor;
+}
+
+.playerSlider__check:hover .playerSlider__checkText {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+
+
+/* ===== Net / Cube end labels alignment =====
+   Key idea:
+   - Use space-between on the ends container
+   - Ensure the range input itself is width: 100%
+   This visually aligns Net/Cube with the slider track ends
+*/
+.playerSlider__ends {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.playerSlider__end {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Disabled state */
+.playerSlider__card :disabled {
+  cursor: not-allowed;
+}

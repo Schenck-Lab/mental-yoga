@@ -1,0 +1,86 @@
+/* layoutUI/Topbar.css */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: var(--topbar);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ---------- Brand ---------- */
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+}
+
+.topbar__title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.topbar__name {
+    /* font-family: var(--font-title); */
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    color: var(--text);
+}
+
+.topbar__stage {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Status ---------- */
+
+.topbar__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Status Pill ---------- */
+
+.statusPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.statusPill__label {
+  opacity: 0.85;
+}
+
+.statusPill__value {
+  font-weight: 700;
+  color: var(--text);
+}

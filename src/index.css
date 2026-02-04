@@ -1,0 +1,134 @@
+/* =====================================================
+   Mental Yoga — Global Base Styles (index.css)
+   Minimal reset + root tokens
+   ===================================================== */
+
+:root {
+  /* Background */
+  --topbar: #1a191a;
+  --bg: #4e4941;
+  --bg-soft: #430404;
+
+  /* Panels */
+  --panel: #404040;
+  --panel-soft: linear-gradient(
+    150deg,
+    #937964 0%,
+    #618587 100%
+  );
+
+  /* Text */
+  --text: #e5e7eb;
+  --muted: #9aa0ad;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.07);
+
+  /* Accent */
+  --accent: #7c9cff;
+  --accent-soft: rgba(124, 156, 255, 0.18);
+
+  /* Shadows */
+  --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.45);
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  /* One UI font stack */
+  --font-ui:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    'Apple Color Emoji',
+    'Segoe UI Emoji';
+
+  /* Shared typography tokens (panel header consistency) */
+  --panel-title-size: 13px;
+  --panel-title-weight: 800;
+  --panel-title-letter: 0.2px;
+
+  --panel-tag-size: 11px;
+  --panel-tag-weight: 600;
+  --panel-tag-letter: 0.2px;
+}
+
+/* Root environment */
+html {
+  height: 100%;
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--font-ui);
+  color: var(--text);
+  background: transparent;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Disable all visible focus styles */
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Disable text selection globally (game / experiment UI) */
+* {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE / old Edge */
+  user-select: none;
+}
+
+/* Make form controls inherit the same font */
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Headings default to inherit unless a component overrides */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: inherit;
+}
+
+p {
+  margin: 0;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}

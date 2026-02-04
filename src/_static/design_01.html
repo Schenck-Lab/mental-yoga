@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mental Yoga — Question Mock</title>
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --panel: #121522;
+      --panel2:#0f1220;
+      --text:#e8ecff;
+      --muted:#b7bfdc;
+      --accent:#6ea8fe;
+      --danger:#ff6b6b;
+      --ok:#4cd964;
+      --border: rgba(255,255,255,0.10);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --gap: 12px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(110,168,254,.18), transparent 60%),
+                  radial-gradient(900px 600px at 80% 30%, rgba(76,217,100,.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+    }
+
+    /* Layout */
+    .app{
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header{
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,12,18,.7);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: var(--gap);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .logo{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(110,168,254,.9), rgba(76,217,100,.7));
+      box-shadow: var(--shadow);
+    }
+    .brand h1{
+      font-size: 15px;
+      margin:0;
+      letter-spacing:.2px;
+      font-weight: 700;
+    }
+    .brand .sub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .statusPills{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      border: 1px solid var(--border);
+      background: rgba(18,21,34,.75);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      white-space: nowrap;
+    }
+    .pill strong{ color: var(--text); font-weight: 700; }
+
+    main{
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 14px 18px;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap: 14px;
+    }
+
+    /* Left panel */
+    .left{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .card{
+      background: rgba(18,21,34,.78);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cardHeader{
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      background: rgba(10,12,22,.35);
+    }
+    .cardHeader h2{
+      font-size: 13px;
+      margin:0;
+      color: var(--text);
+      letter-spacing:.2px;
+    }
+    .tag{
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+    }
+
+    .cardBody{
+      padding: 12px 14px;
+    }
+
+    .promptTitle{
+      font-size: 18px;
+      line-height: 1.25;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+    }
+    .promptText{
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .instruction{
+      border-left: 3px solid var(--accent);
+      padding: 10px 12px;
+      background: rgba(110,168,254,.08);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .instruction strong{ color: var(--text); }
+
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      line-height:1.45;
+      margin-top: 8px;
+    }
+
+    .microRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .micro{
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 10px;
+      background: rgba(0,0,0,.12);
+    }
+    .micro .k{ font-size: 11px; color: var(--muted); }
+    .micro .v{ font-size: 14px; font-weight: 800; margin-top: 4px; }
+
+    /* Action bar */
+    .actionBar{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .btnRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button{
+      appearance:none;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.15);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor:pointer;
+    }
+    button.primary{
+      background: rgba(110,168,254,.22);
+      border-color: rgba(110,168,254,.45);
+    }
+    button.danger{
+      background: rgba(255,107,107,.18);
+      border-color: rgba(255,107,107,.45);
+    }
+    button:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    .note{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* Right / canvas area */
+    .right{
+      min-width: 0;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .stageCard{
+      flex: 1;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .stageTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,12,22,.25);
+    }
+
+    .stageTop .leftInfo{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .statusDot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(76,217,100,.12);
+      flex: 0 0 auto;
+    }
+    .stageTop .msg{
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stageTop .miniControls{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    .miniBtn{
+      padding: 7px 10px;
+      font-size: 12px;
+      border-radius: 12px;
+    }
+
+    .canvasWrap{
+      position: relative;
+      padding: 12px;
+      flex: 1;
+      min-height: 520px;
+    }
+
+    canvas{
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(900px 500px at 50% 20%, rgba(110,168,254,.12), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18));
+      display:block;
+    }
+
+    .overlayBadge{
+      position:absolute;
+      left: 24px;
+      top: 22px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      backdrop-filter: blur(8px);
+    }
+
+    .overlayHelp{
+      position:absolute;
+      right: 24px;
+      top: 22px;
+      width: min(360px, calc(100% - 48px));
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.28);
+      padding: 10px 12px;
+      backdrop-filter: blur(8px);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .overlayHelp strong{ color: var(--text); }
+
+    /* Bottom footer */
+    footer{
+      padding: 10px 18px;
+      border-top: 1px solid var(--border);
+      background: rgba(10,12,18,.6);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footerInner{
+      max-width: 1400px;
+      margin: 0 auto;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Dev panel (optional) */
+    .devCard{
+      display:none; /* toggle to block in DEV */
+    }
+    .devGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .devGrid .item{
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(0,0,0,.10);
+    }
+    .devGrid .item strong{ color: var(--text); }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      main{ grid-template-columns: 1fr; }
+      .canvasWrap{ min-height: 420px; }
+      canvas{ min-height: 420px; }
+      .devGrid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>Mental Yoga</h1>
+            <div class="sub">Cube ↔ Net Spatial Reasoning Tasks</div>
+          </div>
+        </div>
+
+        <div class="statusPills" aria-label="session status">
+          <div class="pill"><span>Participant</span> <strong>user@example.com</strong></div>
+          <div class="pill"><span>Level</span> <strong>3 / 6</strong></div>
+          <div class="pill"><span>Question</span> <strong>2</strong></div>
+          <div class="pill"><span>Time Left</span> <strong>04:12</strong></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- LEFT: prompt + actions -->
+      <section class="left">
+        <div class="card">
+          <div class="cardHeader">
+            <h2>Question</h2>
+            <span class="tag">Answer inside the 3D scene</span>
+          </div>
+          <div class="cardBody">
+            <div class="promptTitle">Overlapping Edges</div>
+            <p class="promptText">
+              A cube net is shown in the scene. One edge is marked. Identify the other edge that overlaps with it when folded.
+            </p>
+
+            <div class="instruction">
+              <strong>How to answer:</strong> rotate the view if needed, then <strong>click an edge in the 3D scene</strong>.
+              Your current selection will be highlighted.
+            </div>
+
+            <div class="microRow">
+              <div class="micro">
+                <div class="k">Current selection</div>
+                <div class="v">Edge: (none)</div>
+              </div>
+              <div class="micro">
+                <div class="k">Attempts</div>
+                <div class="v">0</div>
+              </div>
+            </div>
+
+            <div class="hint">
+              Tip: You can drag to rotate the camera. Use scroll/pinch to zoom (depending on device).
+            </div>
+          </div>
+        </div>
+
+        <div class="card actionBar">
+          <div class="cardHeader">
+            <h2>Actions</h2>
+            <span class="tag">Minimal UI</span>
+          </div>
+          <div class="cardBody">
+            <div class="btnRow">
+              <button class="primary" id="btnSubmit" disabled>Submit</button>
+              <button id="btnClear">Clear Selection</button>
+              <button id="btnHelp">Show Controls</button>
+              <button class="danger" id="btnExit">Exit</button>
+            </div>
+            <div class="note" style="margin-top:10px;">
+              “Submit” becomes available once a valid object is selected in the scene.
+              If the network is unstable, your data will still be available for manual download at the end of the session.
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional DEV panel -->
+        <div class="card devCard" id="devCard">
+          <div class="cardHeader">
+            <h2>DEV Panel</h2>
+            <span class="tag">hidden in study mode</span>
+          </div>
+          <div class="cardBody">
+            <div class="devGrid">
+              <div class="item"><strong>Event log</strong><br/>buffer: 128</div>
+              <div class="item"><strong>Telemetry</strong><br/>5 Hz (enabled)</div>
+              <div class="item"><strong>Camera pose</strong><br/>x: 0.12 y: 1.80 z: 3.40</div>
+              <div class="item"><strong>Run ID</strong><br/>MY-20260113-abc123</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: canvas -->
+      <section class="right">
+        <div class="card stageCard">
+          <div class="stageTop">
+            <div class="leftInfo">
+              <div class="statusDot" aria-hidden="true"></div>
+              <div class="msg" id="sceneMsg">
+                Scene ready — select an object to answer.
+              </div>
+            </div>
+            <div class="miniControls">
+              <button class="miniBtn" id="btnResetCam">Reset Camera</button>
+              <button class="miniBtn" id="btnToggleGrid">Toggle Grid</button>
+              <button class="miniBtn" id="btnToggleDev">DEV</button>
+            </div>
+          </div>
+
+          <div class="canvasWrap">
+            <div class="overlayBadge">R3F Canvas Placeholder</div>
+            <div class="overlayHelp" id="overlayHelp" style="display:none;">
+              <strong>Controls</strong><br/>
+              • Drag: orbit / rotate view<br/>
+              • Scroll: zoom<br/>
+              • Click: select face/edge/vertex (depends on level)<br/>
+              • Submit: confirm your selection
+            </div>
+
+            <canvas id="sceneCanvas" width="1200" height="700" aria-label="3D scene canvas"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footerInner">
+        <div>Study mode: no mid-session resume. Finish page confirms upload & completion.</div>
+        <div>© Mental Yoga — UI mock for Question carrier component</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Minimal interaction mock — just to demonstrate UI behavior, not the actual game.
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnClear = document.getElementById('btnClear');
+    const btnHelp = document.getElementById('btnHelp');
+    const btnToggleDev = document.getElementById('btnToggleDev');
+    const btnResetCam = document.getElementById('btnResetCam');
+    const overlayHelp = document.getElementById('overlayHelp');
+    const devCard = document.getElementById('devCard');
+    const sceneMsg = document.getElementById('sceneMsg');
+
+    let hasSelection = false;
+
+    document.getElementById('sceneCanvas').addEventListener('click', () => {
+      hasSelection = !hasSelection;
+      btnSubmit.disabled = !hasSelection;
+      sceneMsg.textContent = hasSelection
+        ? 'Object selected — you may submit.'
+        : 'Selection cleared — select an object to answer.';
+    });
+
+    btnClear.addEventListener('click', () => {
+      hasSelection = false;
+      btnSubmit.disabled = true;
+      sceneMsg.textContent = 'Selection cleared — select an object to answer.';
+    });
+
+    btnHelp.addEventListener('click', () => {
+      overlayHelp.style.display = overlayHelp.style.display === 'none' ? 'block' : 'none';
+    });
+
+    btnToggleDev.addEventListener('click', () => {
+      devCard.style.display = devCard.style.display === 'none' ? 'block' : 'none';
+    });
+
+    btnResetCam.addEventListener('click', () => {
+      sceneMsg.textContent = 'Camera reset (placeholder).';
+      setTimeout(() => sceneMsg.textContent = 'Scene ready — select an object to answer.', 900);
+    });
+  </script>
+</body>
+</html>
