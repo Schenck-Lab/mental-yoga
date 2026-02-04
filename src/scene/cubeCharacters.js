@@ -2,6 +2,7 @@ import * as Skin from './cubeSkins';
 
 export const CUBE_ID = Object.freeze({
     COOKIE: 'cookie',
+    CEEKIO: 'ceekio',
     CHICKEN: 'chicken',
     PIPE: 'pipe',
     OGRE: 'ogre',
@@ -14,6 +15,7 @@ export const CUBE_ID = Object.freeze({
 
 export const SKIN_MAP = Object.freeze({
     cookie: Skin.CookieSkin,
+    ceekio: Skin.CeekioSkin,
     chicken: Skin.ChickenSkin,
     pipe: Skin.PipeSkin,
     ogre: Skin.OgreSkin,

@@ -3,6 +3,7 @@ import { APP_STAGE } from '../_experiment/constants.js';
 import { useSignal } from '../hooks/useSignal.jsx';
 import { CUBE_ID } from '../scene/cubeCharacters.js';
 import CubeController from '../cubenet/CubeController.js';
+import NonCubeController from '../cubenet/NonCubeController.js';
 import { _render_shout_ } from '../utils/utils.js';
 const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
@@ -34,7 +35,9 @@ export const AppContextProvider = ({ children }) => {
 
     if (!cubeControllerMapRef.current) {
         cubeControllerMapRef.current = Object.fromEntries(
-            Object.values(CUBE_ID).map((id) => [id, new CubeController(id)])
+            Object.values(CUBE_ID).map((id) => (id === CUBE_ID.CEEKIO ?
+                [id, new NonCubeController()] : [id, new CubeController(id)])
+            )
         );
     }
     const cubeControllerMap = cubeControllerMapRef.current;

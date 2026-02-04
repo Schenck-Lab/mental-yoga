@@ -87,7 +87,9 @@ export const V_MAT = {
 export const COOKIE_MAT = {
     dough: createStdMat('hsl(40, 49.80%, 55.50%)', 0, null, true, 0.4, 0.9),
     choc: createStdMat('hsl(33, 36%, 16%)', 0, null, true, 0.4, 0.9),
+    blue: createStdMat('hsl(240, 30%, 44%)', 0, null, false, 0.4, 0.9),
     text: createStdMat('hsl(33, 37.90%, 65.90%)', 1, null),
+    ceekioText: createStdMat('hsl(9, 19%, 36%)', 0.1, null, false, 0.5, 1),
 };
 
 
@@ -222,7 +224,7 @@ export const NEW_VERTICES = {
 
 
 function MatList() {
-    const colorList = [MATLIB, OGRE_MAT, ICEBOX_MAT][2];
+    const colorList = [MATLIB, OGRE_MAT, ICEBOX_MAT, COOKIE_MAT][3];
     const a = 0.5;
     const start = Object.keys(colorList).length - 1;
 

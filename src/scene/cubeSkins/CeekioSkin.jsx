@@ -8,15 +8,15 @@ const h = HALF_UNIT;
 const p = Math.PI;
 const q = p * 0.5;
 const text = {
-    D: 'Yum!',
-    T: 'Sweet',
-    F: 'Fresh',
-    B: 'Butter',
-    L: 'Oat',
-    R: 'Soft',
+    D: 'Hum!',
+    T: 'wheat',
+    F: 'Flash',
+    B: 'Better',
+    L: 'Oak',
+    R: 'Sift',
 };
 const scale = 0.135;
-const textMat = COOKIE_MAT.text.tag;
+const textMat = COOKIE_MAT.ceekioText.tag;
 
 
 function Dough() {
@@ -52,12 +52,12 @@ function Dough() {
 };
 
 
-export default function CookieSkin({label}) {
-    const chocolateChip = (pos) => {
+export default function CeekioSkin({label}) {
+    const blueberry = (pos) => {
         return (
-            <mesh position={pos} scale={[1, 0.75, 1]}>
+            <mesh position={pos} scale={[1,0.75,1]}>
                 <octahedronGeometry args={[0.06, 2]} />
-                {COOKIE_MAT.choc.tag}
+                {COOKIE_MAT.blue.tag}
             </mesh>
         );
     };
@@ -72,15 +72,15 @@ export default function CookieSkin({label}) {
     };
     const y = 0;
 
-    const chocolateGroup = () => {
+    const blueberryGroup = () => {
         return (
             <group rotation={rotChoc[label]}>
-                {chocolateChip([-0.23, y, 0.20])}
-                {chocolateChip([0,     y, 0.12])}
-                {chocolateChip([+0.23, y, 0.24])}
-                {chocolateChip([+0.39, y, 0.01])}
-                {chocolateChip([-0.32, y,-0.15])}
-                {chocolateChip([+0.10, y,-0.36])}
+                {blueberry([-0.23, y, 0.20])}
+                {blueberry([0,     y, 0.12])}
+                {blueberry([0.23,  y, 0.24])}
+                {blueberry([0.39,  y, 0.01])}
+                {blueberry([-0.32, y,-0.15])}
+                {blueberry([0.1,   y,-0.36])}
             </group>
         );
     };
@@ -94,7 +94,7 @@ export default function CookieSkin({label}) {
                 scale={scale} 
                 material={textMat}
             />
-            {chocolateGroup()}
+            {blueberryGroup()}
         </group>
     );
 }
