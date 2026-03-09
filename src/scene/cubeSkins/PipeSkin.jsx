@@ -98,7 +98,7 @@ const rotPipe = {
 
 function Pipe({ cubeId, mainFace, edge }) {
     const pipeRef = useRef();
-    const { cubeControllerMap } = useAppContext();
+    const { cubeControllerMap, sys, addGameData } = useAppContext();
     const controller = cubeControllerMap[cubeId];
 
     const neibFace = FACE_LOCAL_FRAME_MAP[mainFace][edge];
@@ -132,7 +132,7 @@ function Pipe({ cubeId, mainFace, edge }) {
             }}
             onClick={(e) => {
                 e.stopPropagation();
-                controller.interactor.handleEdgeClick(id);
+                controller.interactor.handleEdgeClick(id, addGameData, sys);
             }}
         >
             {cyl_mesh(mat, [r,r,L])}

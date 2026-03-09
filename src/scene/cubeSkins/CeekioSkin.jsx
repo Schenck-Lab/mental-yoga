@@ -2,6 +2,9 @@ import { HALF_UNIT } from '../../cubenet/cubeThreeModel';
 import FaceLabelTextMesh from './FaceLabelTextMesh';
 import { COOKIE_MAT } from '../MatList';
 import { buffer_mesh } from '../meshLib';
+import { useFrame } from '@react-three/fiber';
+import { useRef } from 'react';
+import { useAppContext } from '../../context/AppContext';
 
 // constants
 const h = HALF_UNIT;
@@ -53,6 +56,14 @@ function Dough() {
 
 
 export default function CeekioSkin({label}) {
+    const { ceekioShowFace } = useAppContext();
+    const faceFeatureRef = useRef();
+
+    useFrame((_, delta) => {
+        faceFeatureRef.current.visible = ceekioShowFace.current;
+    });
+
+
     const blueberry = (pos) => {
         return (
             <mesh position={pos} scale={[1,0.75,1]}>
@@ -88,13 +99,15 @@ export default function CeekioSkin({label}) {
     return (
         <group>
             <Dough />
-            <FaceLabelTextMesh 
-                label={label} 
-                text={text} 
-                scale={scale} 
-                material={textMat}
-            />
-            {blueberryGroup()}
+            <group ref={faceFeatureRef} >
+                <FaceLabelTextMesh 
+                    label={label} 
+                    text={text} 
+                    scale={scale} 
+                    material={textMat}
+                />
+                {blueberryGroup()}
+            </group>
         </group>
     );
 }

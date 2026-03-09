@@ -1,23 +1,27 @@
-import { useState } from 'react';
 import { LEVEL_COPY } from '../_experiment/levelText';
-import { LEVEL_ACTIVE_CUBEID_MAP } from '../scene/config';
+import { APP_STAGE } from '../_experiment/constants';
+import { EXPERIMENT_PROBBLEM_SET } from '../_experiment/questionLibrary';
 import { useAppContext } from '../context/AppContext';
 import RotationControls from './tempUI/RotationControls';
 import CookieSelector from './tempUI/CookieSelector';
 import ModeSelection from './ModeSelection';
 import PlayerSlider from './PlayerSlider';
-import { parseQcode } from '../utils/utils';
+import { LEVEL_TIME_LIMIT_SEC } from '../_experiment/constants';
+import { parseQcode, getEpochMS, diffSeconds, _render_shout_ } from '../utils/utils';
 import './SidePanel.css';
 
+
 function LevelIntro() {
-    const { sys, setAnswerSignal, weakResetSignal } = useAppContext();
+    _render_shout_('LevelIntro');
+
+    const { sys, addGameData } = useAppContext();
     const levelId = sys.level.value;
     const level = LEVEL_COPY[levelId];
-
+    
     const onClick = () => {
         sys.qcode.set(prev => prev + 1);
-        setAnswerSignal(false);
-        weakResetSignal.current += 1;
+
+        addGameData(sys, 'Enter Level');
     };
 
     const enterLevelButton = (
@@ -48,7 +52,7 @@ function LevelIntro() {
 
 
 function AnswerPanel({ disabled }) {
-    const { sys, answerSignal } = useAppContext();
+    const { sys, addGameData } = useAppContext();
     const levelId = sys.level.value;
     const level = LEVEL_COPY[levelId];
     const { isIntro, qid } = parseQcode(sys.qcode.ref.current);
@@ -62,13 +66,14 @@ function AnswerPanel({ disabled }) {
     
     const onClick = () => {
         sys.qcode.set(prev => prev + 1);
+        addGameData(sys, 'Confirm Answer');
     };
 
     const confirmButton = (
         <button
             className='btn btn--confirm'
             type='button'
-            disabled={!answerSignal || false}
+            disabled={false}
             onClick={onClick}
         >
             Confirm Answer
@@ -97,21 +102,32 @@ function AnswerPanel({ disabled }) {
 }
 
 function ReviewPanel({ disabled }) {
-    const { sys, setAnswerSignal, weakResetSignal, cubeControllerMap } = useAppContext();
-
-    const levelId = sys.level.value;
-    const controller = cubeControllerMap[LEVEL_ACTIVE_CUBEID_MAP[levelId]];
-
+    const { sys, levelStartEpochMS, addGameData } = useAppContext();
     const onClick = () => {
-        sys.qcode.set(prev => prev + 1);
-        setAnswerSignal(false);
-        weakResetSignal.current += 1;
+        const levelId = sys.level.value;
+        const { qid } = parseQcode(sys.qcode.value);
+        
+        // level time check
+        const ts = getEpochMS();
+        const diff = diffSeconds(levelStartEpochMS.current, ts);
+        const exceedTimeLimit = diff >= LEVEL_TIME_LIMIT_SEC[levelId - 1];
+        const noQuestionInCurrentLevel = qid === EXPERIMENT_PROBBLEM_SET[levelId - 1].length;
 
-        if (levelId === 6) {
-            controller.resetToCubeLocked();
+        addGameData(sys, 'Next Question');
+        
+        if (exceedTimeLimit) {
+            levelStartEpochMS.current = null;
         }
-        else {
-            controller.resetToNetLocked();
+        // to next question or level within time limit
+        if (exceedTimeLimit || noQuestionInCurrentLevel) {
+            if (levelId === 6) {
+                sys.appStage.set(APP_STAGE.UPLOAD);
+                return;
+            }
+            sys.level.set(prev => prev + 1);
+            sys.qcode.set(0);
+        } else {
+            sys.qcode.set(prev => prev + 1);
         }
     };
 

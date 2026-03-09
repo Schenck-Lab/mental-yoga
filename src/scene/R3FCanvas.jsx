@@ -5,7 +5,8 @@ import { OrbitControls, Environment, Grid } from '@react-three/drei';
 import * as THREE from 'three';
 import { easing } from 'maath';
 import { useAppContext } from '../context/AppContext';
-import { Stage } from './Stage';
+import Stage from './Stage';
+import CanvasRuntime from './CanvasRuntime';
 import { _render_shout_ } from '../utils/utils';
 
 
@@ -22,6 +23,24 @@ function CameraControls() {
     useEffect(() => {
         const controls = orbitControlsRef.current;
         if (!controls) return;
+
+        const MIN_DOWNTILT_DEG = 30;
+        const MAX_ALLOWED_POLAR = THREE.MathUtils.degToRad(90 - MIN_DOWNTILT_DEG);
+
+        controls.applyCameraRestriction = (restricted) => {
+            if (restricted) {
+                // Enforce the down-tilt constraint (>= 15°).
+                controls.maxPolarAngle = MAX_ALLOWED_POLAR;
+                controls.enablePan = false;
+            } else {
+                // Restore full vertical rotation freedom.
+                controls.maxPolarAngle = Math.PI;
+                controls.enablePan = true;
+            }
+
+            // Make sure internal spherical state is consistent with the new limits.
+            controls.update();
+        };
 
         // Initial position and target
         camera.lookAt(0,0,0);
@@ -151,8 +170,9 @@ const R3FCanvas = React.memo(function R3FCanvas() {
             <CameraControls />
             <Env />
             <GridAndGround visible={false} />
-            {/* Game stage */}
+            {/* Game stage and runtime */}
             <Stage />
+            <CanvasRuntime />
         </Canvas>
     );
 });

@@ -1,0 +1,79 @@
+
+- cube-nets
+
+#              #              #           #                 #            #
+# # # #        # # # #        # # # #     # # # #         # # # #      # # # #
+#                #                #             #           #              #
+pickaxe        pipe-wrench    pliers      ring-spanner    cross        bone
+
+# #            # #            # #            # #
+  # # #          # # #          # # #          # #        # # #
+  #                #                #            # #          # # #
+seahorse-1     seahorse-2     seahorse-3       snake      stairs
+
+
+- non-cube-nets
+
+#                                         #   #
+# #          # # # # #     # # # #        # # #           # # # # #
+# # #            #         #     #          #               #
+triangle      long-t       table          fork             trunk
+
+                                                              #
+# # # #      # # # #                       #   #          # # #
+#              #            # # # #        # # #          #
+#              #              #   #        #              #
+wide-l       t-junction     letter-f       chair          waterfall
+
+#
+#                                          #
+# # #          # #   #      # # # # #      # #          # # # #            # # #
+  #              # # #      #                # # #            # #            # # #
+swivel-chair     spoon       long-l         river       diving-board         skis
+
+
+Level-1
+
+cross
+bone  
+waterfall
+ring-spanner  
+snake  
+diving-board 
+river
+seahorse-2
+
+
+
+| level |  question specification |       cube characters      |  reset fields @ q-solving   | reset fields @ replaying
++-------+-------------------------+----------------------------+-----------------------------+--------------------------
+|   1   | mnetKey                 | cookie XOR ceekio          |  all cube status; replay UI | cube-inter locks
+|   2   | mnetKey, fid            | chicken                    |  
+|   3   | mnetKey, eid            | pipe                       |
+|   4   | mnetKey, vid            | ogre                       |
+|   5   | mnetKey, base, initPose | icebox  AND icebox_static  |
+|   6   | mnetKey, base, initPose | evileye AND evileye_static |
+
+
+cube status:
+    visible:
+    is_static:
+    initPose:
+    maniNetKey:
+    baseId:
+    t100:
+    fid_given:
+    eid_given:
+    vid_given:
+    interaction_lock:
+
+replay UI = { autoPlay, sliderDefaultValue (t100), animMode (blossom) }
+
+
+
+tr
+
+enter_the_level
+confirm_answer
+next_question
+next_level

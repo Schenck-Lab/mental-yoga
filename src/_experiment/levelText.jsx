@@ -260,11 +260,35 @@ const level6 = {
 };
 
 
+const level0 = {
+    name: 'None',
+    title: "Loading...",
+
+    intro: (
+        <>
+        <p>
+            Mental Yoga for cube characters is a great place!
+        </p>
+        </>
+    ),
+
+    questionOneLiner: (   
+        <>
+        Questions are loading...
+        </>
+    ),
+
+    hint: (
+        <p>Where is the hint?</p>
+    ),
+};
+
 export const LEVEL_COPY = {
-  1: level1,    // Cookie
-  2: level2,    // Cluck
-  3: level3,    // Pipes
-  4: level4,    // Blueb
-  5: level5,    // Frostra
-  6: level6,    // Iris
+    0: level0,
+    1: level1,    // Cookie
+    2: level2,    // Cluck
+    3: level3,    // Pipes
+    4: level4,    // Blueb
+    5: level5,    // Frostra
+    6: level6,    // Iris
 };

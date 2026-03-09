@@ -74,8 +74,8 @@ export default function ScenePort({ children }) {
     const levelId = sys.level.ref.current;
 
     const level = LEVEL_COPY[levelId];
-    const title = `Level ${levelId} · ${level.title}`;
     const speaker = levelId == 6 ? '...' : 'Iris:';
+    const levelNumber = (levelId >= 1 && levelId <= 6) ? `Level ${levelId}: ` : '';
     
     const placeHolder = (
         <div className='scenePort__placeholder'>
@@ -86,7 +86,7 @@ export default function ScenePort({ children }) {
     return (
         <section className='scenePort'>
             <header className='scenePort__header'>
-                <div className='scenePort__title'>{title}</div>
+                <div className='scenePort__title'>{levelNumber}{level.title}</div>
                 <div className='scenePort__tag'>Character: {level.name}</div>
             </header>
 

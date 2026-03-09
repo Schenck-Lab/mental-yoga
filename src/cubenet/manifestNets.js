@@ -103,3 +103,5 @@ function buildManifestMap(pnets, isValid) {
 // Registries (system cache)
 export const CUBE_MNETS = buildManifestMap(CUBE_PNETS, true);
 export const NON_CUBE_MNETS = buildManifestMap(NON_CUBE_PNETS, false);
+export const ALL_MNETS = { ...CUBE_MNETS, ...NON_CUBE_MNETS };  // size: 192
+

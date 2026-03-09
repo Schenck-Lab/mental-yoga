@@ -1,23 +1,24 @@
 // scene/Scene.jsx
 
-import { useAppContext } from '../context/AppContext';
-import { LEVEL_SPEC } from './config';
+import { CUBE_ID } from './cubeCharacters';
 import FoldableCube from './FoldableCube';
+import { _render_shout_ } from '../utils/utils';
 
 
-export function Stage() {
-    const { sys } = useAppContext();
-
-    const levelId = sys.level.value;
-    const actors = LEVEL_SPEC[levelId] ?? [];
+export default function Stage() {
+    _render_shout_('Stage');
 
     return (
-        <group name={`scene_level_${levelId}`}>
-            {actors.map((cubeId, _) => {
-                return (
-                    <FoldableCube key={cubeId} cubeId={cubeId} />
-                );
-            })}
+        <group>
+            <FoldableCube cubeId={CUBE_ID.COOKIE} />
+            <FoldableCube cubeId={CUBE_ID.CEEKIO} />
+            <FoldableCube cubeId={CUBE_ID.CHICKEN} />
+            <FoldableCube cubeId={CUBE_ID.PIPE} />
+            <FoldableCube cubeId={CUBE_ID.OGRE} />
+            <FoldableCube cubeId={CUBE_ID.ICEBOX} />
+            <FoldableCube cubeId={CUBE_ID.ICEBOX_STATIC} />
+            <FoldableCube cubeId={CUBE_ID.EVILEYE} />
+            <FoldableCube cubeId={CUBE_ID.EVILEYE_STATIC} />
         </group>
     );
 }

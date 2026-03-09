@@ -247,16 +247,22 @@ function Selector({ ctrl, label, rot }) {
     const idx = [0,1,2, 0,2,3, 0,3,4];
 
     const onOver = (e) => {
+        if (ctrl.interactor.selectionLock) return;
+
         e.stopPropagation();
         ctrl?.interactor?.onHover?.(label);
     };
 
     const onOut = (e) => {
+        if (ctrl.interactor.selectionLock) return;
+
         e.stopPropagation();
         ctrl?.interactor?.onOut?.(label);
     };
 
     const onClick = (e) => {
+        if (ctrl.interactor.selectionLock) return;
+        
         e.stopPropagation();
         ctrl?.interactor?.onClick?.(label);
         console.log(`ice_cream @ ${label}`);

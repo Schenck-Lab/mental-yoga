@@ -14,7 +14,7 @@ function StatusPill({ label, value }) {
 export default function Topbar() {
     const { meta, sys } = useAppContext();
     const user = (sys.appStage.value == APP_STAGE.LOGIN) 
-        ? ('not signed in') : (meta.email.current);
+        ? ('not signed in') : (`${meta.firstName.current} ${meta.lastName.current}`);
 
     const logo = (
         <div className='topbar__brand'>

@@ -38,6 +38,7 @@ export default class NonCubeController {
 
     constructor() {
         this.cubeId = CUBE_ID.CEEKIO;
+        this.visible = true;
 
         // status
         this.rigRefsReady = false;
@@ -53,13 +54,14 @@ export default class NonCubeController {
         // Cube-net
         this.rigDirty = false;
         this.manifestMatrix = null;
+        this.baseId = 0;
         this.rootIndex = [0, 0];
         this.guide = null;
 
         this.animationMode = ANIMATION_MODE.BLOSSOM;
         this.CUBE_NET_ANIMATION_SPEED = 20;
-        this.t100 = 100;
-        this.p200 = 100;
+        this.t100 = 0;
+        this.p200 = 0;
         this.tVector = [1, 1, 1, 1, 1];
 
         this.sliderRef = undefined;
@@ -95,15 +97,36 @@ export default class NonCubeController {
 
     initCube() {
         this.setAnimationMode(ANIMATION_MODE.BLOSSOM);
-        //this.setManifestMatrix(NON_CUBE_MNETS[MNETS_KEY[41]].outputMatrix);
         this.setManifestMatrix(null);
         
         const init = CUBE_LEVEL_INIT[CUBE_ID.CEEKIO];   // -- the same as cookie's
         this.root.current.position.set(...init.pos);
-        this.t100 = init.t100;
-
+        
         this.init = true;
         console.log('[Cube Init: done]');
+    }
+
+    setVisible(vis=true) {
+        console.log(`receive vis: ${vis}`);
+        
+        if (vis === false) {
+            this.visible = vis;
+            this.root.current.visible = vis;
+            if (this.root.current.position.y < 1000) {
+                this.root.current.position.y += 1000;
+            }
+            return;
+        }
+        this.visible = true;
+        this.root.current.visible = true;
+        if (this.root.current.position.y > 1000) {
+            this.root.current.position.y -= 1000;
+        }
+    }
+
+    setPosition(pos=[0,HALF_UNIT,0]) {
+        if (!this.root) return;
+        this.root.current.position.set(...pos);
     }
 
     rotateToPose(dummy) {
@@ -115,11 +138,6 @@ export default class NonCubeController {
             this.sliderRef = sliderRef;
             console.log('[sliderRef attached.]');
         }
-    }
-
-    setCubePosition(pos) {
-        if (!this.root) return;
-        this.root.current.position.set(...pos);
     }
 
     resetTimeParameters(value = 0) {
@@ -143,9 +161,10 @@ export default class NonCubeController {
         this.isAutoPlay = false;
     }
 
-    setVisible(flag) {
-        this.root.current.visible = flag;
-    }
+    // setVisible(flag) {
+    //     this.visible = flag;
+    //     this.root.current.visible = flag;
+    // }
 
     // extract root indices
     setManifestMatrix(matrix) {
@@ -181,13 +200,22 @@ export default class NonCubeController {
         this.isAutoPlay = flag;
     }
 
+    setBaseId() {
+        this.baseId = this.baseId;
+        this.rigDirty = true;   
+    }
+
     updateAnimation(delta) {
         if (!this.rigRefsReady) {
             this.checkRigRefs();
-            return;
+            //return;
         }
         if (!this.init) {
             this.initCube();
+            //return;
+        }
+        if (!this.visible) {
+            this.root.current.visible = false;
             return;
         }
         if (this.isRotating) {
@@ -195,7 +223,6 @@ export default class NonCubeController {
             return;
         }
         if (this.rigDirty) {
-            
             this.#computeRigGuide();
             this.#rebuildRigHierarchy();
             this.rigDirty = false;
@@ -380,5 +407,20 @@ export default class NonCubeController {
     
             edgeGroup.rotation[hingeAxis] = this.tVector[i] * rotLimit;
         }
+    }
+
+    reset(actor) {
+        this.setVisible(actor.vis);
+        this.setPosition(actor.pos);
+        
+        this.manifestMatrix = null;
+        this.#detachFaces();
+
+        for (const face of Object.values(this.faceRigs)) {
+            const group = face?.face?.current;
+            if (!group) continue;
+            this.root.current.add(group);
+        }
+        this.#applyHingeRotations();
     }
 }

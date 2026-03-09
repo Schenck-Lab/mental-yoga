@@ -57,7 +57,6 @@ export function computeRigGuide(ctrl) {
         ctrl.guide = null;
         return;
     }
-
     const hierMatrix = manifestMatrix.map((row) =>
         row.map((cell) => (cell === 1 ? 'xx' : '__'))
     );
@@ -139,6 +138,7 @@ export function rebuildRigHierarchy(ctrl) {
 }
 
 export function updateT100FromDelta(ctrl, delta) {
+    console.log(delta, ctrl.t100, ctrl.p200);
     const MAX_PROGRESS = 200;
     ctrl.p200 += delta * ctrl.CUBE_NET_ANIMATION_SPEED;
     
@@ -146,6 +146,7 @@ export function updateT100FromDelta(ctrl, delta) {
         ctrl.p200 -= MAX_PROGRESS;
     }
     ctrl.t100 = Math.min(ctrl.p200, MAX_PROGRESS - ctrl.p200);
+    
 }
 
 function _computeHingeTVector(ctrl) {
@@ -195,3 +196,4 @@ export function applyHingeRotations(ctrl) {
         edgeGroup.rotation[axis] = ctrl.tVector[i] * limitRad;
     }
 }
+

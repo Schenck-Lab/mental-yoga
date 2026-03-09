@@ -17,7 +17,6 @@ export default function Game() {
                 const level = Number(key);
                 sys.level.set(level);
                 sys.qcode.set(0);
-                weakResetSignal.current += 1;
             }
             // Left arrow
             if (key === '-' || key === '_') {
@@ -30,7 +29,6 @@ export default function Game() {
             if (key === '=' || key === '+') {
                 // TODO: your right-arrow logic here
                 sys.qcode.set(prev => prev + 1);
-                weakResetSignal.current += 1;
                 return;
             }
         };

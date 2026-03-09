@@ -23,7 +23,7 @@ function RadioOption({ value, checked, onChange }) {
 }
 
 export default function CookieSelector() {
-    const { sys, setAnswerSignal } = useAppContext();
+    const { sys, addGameData } = useAppContext();
     const [localValue, setLocalValue] = useState();
     
     // Reset Selector at the beginning of each Question
@@ -34,7 +34,8 @@ export default function CookieSelector() {
 
     const handleChange = (nextValue) => {
         setLocalValue(nextValue);
-        setAnswerSignal(true);
+        //setAnswerSignal(true);
+        addGameData(sys, nextValue, nextValue);
     };
 
     return (

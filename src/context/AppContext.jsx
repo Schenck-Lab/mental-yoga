@@ -1,10 +1,10 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useRef, useState, useMemo } from 'react';
 import { APP_STAGE } from '../_experiment/constants.js';
 import { useSignal } from '../hooks/useSignal.jsx';
 import { CUBE_ID } from '../scene/cubeCharacters.js';
 import CubeController from '../cubenet/CubeController.js';
 import NonCubeController from '../cubenet/NonCubeController.js';
-import { _render_shout_ } from '../utils/utils.js';
+import { _render_shout_, getEpochMS, toTimeCT, parseQcode } from '../utils/utils.js';
 const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
 
@@ -13,22 +13,58 @@ export const AppContextProvider = ({ children }) => {
     _render_shout_('AppContextProvider', '', true);
 
     // meta data
-    const pid = useRef('?000');
-    const firstName = useRef('user_fname');
-    const lastName = useRef('user_lname');
-    const email = useRef('user@example.com');
+    const pid = useRef('no_data');
+    const firstName = useRef('no_data');
+    const lastName = useRef('no_data');
+    const email = useRef('no_data');
+    const loginTime = useRef('no_data');
+    const summary = useRef({
+        1: ['_','_','_','_','_','_','_','_'], 
+        2: ['_','_','_','_','_','_','_','_'], 
+        3: ['_','_','_','_','_','_','_','_'], 
+        4: ['_','_','_','_','_','_','_','_'], 
+        5: ['_','_','_','_','_','_','_','_'], 
+        6: ['_','_','_','_','_','_','_','_'], 
+    });
+
+    // CSV Buffers
+    const csvMetaBufRef = useRef([]);  // Buffer for metadata
+    const csvGameBufRef = useRef([]);  // Buffer for game data
+    const addMetaData = (key, value) => {
+        csvMetaBufRef.current.push(`# ${key}: ${value}`);
+    };
+
+    const addGameData = (sys, clickObj, answer='n/a') => {
+        const ts = getEpochMS();
+        const timeCT = toTimeCT(ts);
+        const level = sys.level.ref.current;
+        const objQ = parseQcode(sys.qcode.ref.current);
+        const qid = objQ.qid;
+        const q_stage = objQ.isSolving ? 'Solving' : 'Replaying';
+        csvGameBufRef.current.push([
+            ts, timeCT, level, qid, q_stage, clickObj, answer
+        ]);
+    };
 
     // controls refs
     const orbitControlsRef = useRef();
+    const isCameraRestricted = useRef(false);
+    const sliderRef = useRef();
+    const autoPlayRef = useRef();
     
     // game status
-    const appStage = useSignal(APP_STAGE.GAME);
-    const level = useSignal(6);
+    const appStage = useSignal(APP_STAGE.LOGIN);
+    const level = useSignal(1);
     const qcode = useSignal(0);
+    const _runtime_level = useRef(-1);
+    const _runtime_qcode = useRef(-1);
 
-    // signals
-    const [answerSignal, setAnswerSignal] = useState(false);
-    const weakResetSignal = useRef(0);
+    // timer
+    const levelStartEpochMS = useRef(null);
+
+    //
+    const cookieShowFace = useRef(true);
+    const ceekioShowFace = useRef(true);
 
     // cube character controller map
     const cubeControllerMapRef = useRef(null);
@@ -42,15 +78,13 @@ export const AppContextProvider = ({ children }) => {
     }
     const cubeControllerMap = cubeControllerMapRef.current;
 
-    
-    //
-
     const value = {
-        meta: { pid, firstName, lastName, email },
-        sys: { appStage, level, qcode },
-        orbitControlsRef,
-        cubeControllerMap,
-        answerSignal, setAnswerSignal, weakResetSignal,
+        meta: { pid, firstName, lastName, email, loginTime, summary },
+        sys: { appStage, level, qcode, _runtime_level, _runtime_qcode },
+        orbitControlsRef, isCameraRestricted, sliderRef, autoPlayRef,
+        cubeControllerMap, levelStartEpochMS,
+        cookieShowFace, ceekioShowFace,
+        csvMetaBufRef, csvGameBufRef, addMetaData, addGameData,
     };
 
     return (

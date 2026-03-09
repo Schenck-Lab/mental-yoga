@@ -8,16 +8,9 @@ import './RotationControls.css';
 export default function RotationControls() {
     _render_shout_('RotationControls');
 
-    const { sys, answerSignal, setAnswerSignal, cubeControllerMap } = useAppContext();
+    const { sys, addGameData, cubeControllerMap } = useAppContext();
     const controller = cubeControllerMap[CUBE_ID.EVILEYE];
     const [disableReset, setDisableReset] = useState(true);
-
-    useEffect(() => {
-        const isOdds = ((sys.qcode.value & 1) == 1);
-        if (!answerSignal && isOdds)
-            setDisableReset(true);
-
-    }, [sys.qcode.value]);
 
     const buttons = [
         { id: 'ccw', op: 'zp', label: '↺', type: 'rotBtn' },
@@ -32,17 +25,21 @@ export default function RotationControls() {
     ];
 
     function handleRotationClick(button) {
+        
         if (button.type === 'rotBtn') {
-            setAnswerSignal(true);
+            //setAnswerSignal(true);
 
             controller.rotateStep(button.op);
             setDisableReset(controller.nextPose === 'TF');
+
+            addGameData(sys, button.op, controller.nextPose);
             return;
         }
 
         if (button.label === 'Reset') {
             controller.rotateToPose('TF');
             setDisableReset(true);
+            addGameData(sys, 'RESET', 'TF');
             return;
         }
 
@@ -57,6 +54,7 @@ export default function RotationControls() {
 
         controller.rotateToPose(nextPose);
         setDisableReset(nextPose === 'TF');
+        addGameData(sys, 'RANDOM', nextPose);
     }
 
     return (

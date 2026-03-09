@@ -36,10 +36,6 @@ export default function ModeSelection() {
     const controller = cubeControllerMap[LEVEL_ACTIVE_CUBEID_MAP[levelId]];
 
     useEffect(() => {
-        controller.setAnimationMode(ANIMATION_MODE.BLOSSOM);
-    }, []);
-    
-    useEffect(() => {
         const resetFlag = (sys.qcode.value & 1) === 1;
         if (resetFlag) setAnimMode(ANIMATION_MODE.BLOSSOM);
     }, [sys.qcode.value]);

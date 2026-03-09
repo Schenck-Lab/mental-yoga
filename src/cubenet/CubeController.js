@@ -1,8 +1,7 @@
 // cubenet/CubeController.js
 import { Quaternion } from 'three';
-import { CUBE_MNETS } from './manifestNets';
 import { FACE_LABEL, FACE_LOCAL_FRAME_MAP, CUBE_ORIENTATION_MAP } from './cubeSpec';
-import { ANIMATION_MODE } from './cubeThreeModel';
+import { ANIMATION_MODE, HALF_UNIT } from './cubeThreeModel';
 import { CUBE_ID } from '../scene/cubeCharacters';
 import { CUBE_LEVEL_INIT } from '../scene/config';
 import {
@@ -14,9 +13,6 @@ import {
 import { createInteractor } from './cubeInteraction';
 
 
-const MNETS_KEY = Object.keys(CUBE_MNETS);
-
-
 export default class CubeController {
 
     constructor(cubeId = 'cookie') {
@@ -24,6 +20,7 @@ export default class CubeController {
             throw new Error(`Invalid cubeId: ${cubeId}`);
         }
         this.cubeId = cubeId;
+        this.visible = true;
 
         // status
         this.rigRefsReady = false;
@@ -61,7 +58,7 @@ export default class CubeController {
         this.animationMode = ANIMATION_MODE.BLOSSOM;
         this.CUBE_NET_ANIMATION_SPEED = 20;
         this.t100 = 100;
-        this.p200 = 100;
+        this.p200 = this.t100;
         this.tVector = [1, 1, 1, 1, 1];
 
         this.sliderRef = undefined;
@@ -101,32 +98,45 @@ export default class CubeController {
 
     initCube() {
         this.setAnimationMode(ANIMATION_MODE.BLOSSOM);
-        this.setManifestMatrix(CUBE_MNETS[MNETS_KEY[0]].outputMatrix);
+        this.setManifestMatrix(this.manifestMatrix);
         this.setBaseId(0);
-
-        const init = CUBE_LEVEL_INIT[this.cubeId];
-        this.root.current.position.set(...init.pos);
-        this.t100 = init.t100;
-
+        this.t100 = 100;
 
         this.init = true;
-        console.log('[Cube Init: done]');
+        console.log(`[Cube Init: done] ${this.cubeId}`);
     }
 
     attachSliderRef(sliderRef) {
         if (sliderRef && this.sliderRef !== sliderRef) {
             this.sliderRef = sliderRef;
-            console.log('[sliderRef attached.]');
+            console.log(`[sliderRef attached] ${this.cubeId}`);
         }
     }
 
-    setCubePosition(pos) {
+    setVisible(vis) {
+        console.log(`receive vis: ${vis}`);
+        if (vis === false) {
+            this.visible = vis;
+            this.root.current.visible = vis;
+            if (this.root.current.position.y < 1000) {
+                this.root.current.position.y += 1000;
+            }
+            return;
+        }
+        this.visible = true;
+        this.root.current.visible = true;
+        if (this.root.current.position.y > 1000) {
+            this.root.current.position.y -= 1000;
+        }
+    }
+
+    setPosition(pos=[0,HALF_UNIT,0]) {
         if (!this.root) return;
         this.root.current.position.set(...pos);
     }
 
     /* Jump to a target orientation (world/observer-frame pose). */
-    rotateToPose(targetPose) {
+    rotateToPose(targetPose='TF') {
         if (this.isRotating) {
             return;
         }
@@ -175,7 +185,7 @@ export default class CubeController {
         this.root.current.quaternion.copy(this.qtnCurr);
     }
 
-    resetTimeParameters(value = 0) {
+    resetTimeParameters(value) {
         if (value < 0 || value > 100) {
             throw Error(`Invalid argument: value=${value}`);
         }
@@ -186,17 +196,9 @@ export default class CubeController {
         }
     }
 
-    resetToCubeLocked() {
-        this.resetTimeParameters(100);
-        this.isAutoPlay = false;
-    }
-
-    resetToNetLocked() {
-        this.resetTimeParameters(0);
-        this.isAutoPlay = false;
-    }
-
     setManifestMatrix(matrix) {
+        if (!matrix) return;
+
         const getFacesCoordinate = (mat) => {
             const list = [];
             for (let r = 0; r < 8; ++r) {
@@ -210,24 +212,19 @@ export default class CubeController {
         this.manifestMatrix = matrix;
         this.faceIndices = getFacesCoordinate(matrix);
         this.rigDirty = true;
-        //this.resetTimeParameters(100);
         this.resetTimeParameters(CUBE_LEVEL_INIT[this.cubeId].t100);
     }
 
-    setBaseId(baseId) {
+    setBaseId(baseId=0) {
         this.baseId = baseId;
         this.rigDirty = true;
-        //this.resetTimeParameters(100);
-        this.resetTimeParameters(CUBE_LEVEL_INIT[this.cubeId].t100);
     }
 
     setAnimationMode(mode) {
         this.animationMode = mode;
-        // this.resetTimeParameters(100);
-        this.resetTimeParameters(CUBE_LEVEL_INIT[this.cubeId].t100);
+        this.resetTimeParameters(100);
         if (this.sliderRef?.current) {
-            //this.sliderRef.current.value = 100;
-            this.sliderRef.current.value = CUBE_LEVEL_INIT[this.cubeId].t100;
+            this.sliderRef.current.value = 100;
         }
     }
 
@@ -261,11 +258,24 @@ export default class CubeController {
                 this.sliderRef.current.value = this.t100;
             }
         }
+        
         if (this.guide) {
             applyHingeRotations(this);
         }
         if (this.interactor) {
             this.interactor?.update();
         }
+    }
+
+    reset(actor) {
+        this.setVisible(actor.vis);
+        this.rotateToPose();
+        this.setPosition(actor.pos);
+        this.resetTimeParameters(actor.t100);
+        this.interactor?.clearAllLabels?.();
+        if (actor.cubeId === CUBE_ID.ICEBOX) {
+            this.interactor.activeLabel = 'FT';
+        }
+        this.interactor?.setLock?.(true);
     }
 }

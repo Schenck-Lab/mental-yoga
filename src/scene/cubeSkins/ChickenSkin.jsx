@@ -3,9 +3,8 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { SIMPLE_MAT, CHICKEN_MAT } from '../MatList';
 import { HALF_UNIT } from '../../cubenet/cubeThreeModel';
 import FaceLabelTextMesh from './FaceLabelTextMesh';
-import { sphere_mesh, cyl_mesh, buffer_mesh,torus_mesh } from '../meshLib';
+import { sphere_mesh, cyl_mesh, buffer_mesh,torus_mesh, indices_4_to_3 } from '../meshLib';
 import { useAppContext } from '../../context/AppContext';
-
 
 // constants
 const h = HALF_UNIT;
@@ -34,7 +33,7 @@ const textMat = SIMPLE_MAT.label;
 
 function BasicFace({cubeId, label}) {
     const ref = useRef();
-    const { cubeControllerMap } = useAppContext();
+    const { cubeControllerMap, addGameData, sys } = useAppContext();
     const controller = cubeControllerMap[cubeId];
 
     useEffect(() => {
@@ -68,6 +67,23 @@ function BasicFace({cubeId, label}) {
         0,3,5, 0,5,2, 4,10,11, 4,11,5,
         1,2,8, 8,7,1, 11,9,8, 8,9,6,
     ];
+
+    const x = 0.4;
+    const y = 0.03;
+    const w = 0.1;
+
+    const pts = [[x-w, y, x], [x, y, x-w]];
+    pts.push(...pts.map(p => [+p[0], p[1], -p[2]]));
+    pts.push(...pts.map(p => [-p[0], p[1], +p[2]]));
+    pts.push(...pts.map(p => [ p[0], -p[1], p[2]]));
+
+    const ind = [
+        0,2,3,1, 2,0,4,6, 4,5,7,6,
+        11,10,8,9, 10,14,12,8, 14,15,13,12,
+        1,3,11,9, 3,2,10,11, 2,6,14,10, 6,7,15,14,
+        7,5,13,15, 5,4,12,13, 4,0,8,12, 0,1,9,8
+    ];
+
     return (
         <group userData={{id: label}} >
             <group
@@ -79,7 +95,7 @@ function BasicFace({cubeId, label}) {
             </group>
             
 
-            <mesh ref={ref} position={[0,0,-0.06]} 
+            <group position={[0,0,-0.06]} 
                 onPointerOver={(e) => {
                     e.stopPropagation();
                     controller.interactor.handleFaceHover(label, 1);
@@ -90,12 +106,13 @@ function BasicFace({cubeId, label}) {
                 }}
                 onClick={(e) => {
                     e.stopPropagation();
-                    controller.interactor.handleFaceClick(label);
+                    controller.interactor.handleFaceClick(label, addGameData, sys);
                 }}
             >
-                <boxGeometry args={[0.8, 0.8, 0.06]} />
-                {CHICKEN_MAT.inner}
-            </mesh>
+                {/* <boxGeometry args={[0.8, 0.8, 0.06]} /> */}
+                {buffer_mesh(pts.flat(), indices_4_to_3(ind), CHICKEN_MAT.inner, 
+                    [0,0,0], [q,0,0], [1,1,1], ref)}
+            </group>
         </group>);
 };
 
@@ -149,6 +166,7 @@ function ChickenFace({cubeId, label}) {
         
         return (
             <group
+                
                 onPointerOver={(e) => {e.stopPropagation()}}
                 onPointerOut={(e) => {e.stopPropagation()}}
                 onClick={(e) => {
@@ -239,7 +257,6 @@ function ChickenTail({cubeId, label}) {
         </group>
     );
 }
-
 
 function ChickenWing({cubeId, label}) {
     const ref = useRef();
