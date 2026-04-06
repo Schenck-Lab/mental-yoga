@@ -90,10 +90,10 @@ export default class CubeController {
         });
 
         if (!this.rigRefsReady) {
-            console.warn('[Loading rig refs...]');
+            //console.warn('[Loading rig refs...]');
             return;
         }
-        console.log('[Rig Refs Check: Passed]');
+        //console.log('[Rig Refs Check: Passed]');
     }         
 
     initCube() {
@@ -103,18 +103,18 @@ export default class CubeController {
         this.t100 = 100;
 
         this.init = true;
-        console.log(`[Cube Init: done] ${this.cubeId}`);
+        //console.log(`[Cube Init: done] ${this.cubeId}`);
     }
 
     attachSliderRef(sliderRef) {
         if (sliderRef && this.sliderRef !== sliderRef) {
             this.sliderRef = sliderRef;
-            console.log(`[sliderRef attached] ${this.cubeId}`);
+            //console.log(`[sliderRef attached] ${this.cubeId}`);
         }
     }
 
     setVisible(vis) {
-        console.log(`receive vis: ${vis}`);
+        //console.log(`receive vis: ${vis}`);
         if (vis === false) {
             this.visible = vis;
             this.root.current.visible = vis;
@@ -222,10 +222,10 @@ export default class CubeController {
 
     setAnimationMode(mode) {
         this.animationMode = mode;
-        this.resetTimeParameters(100);
-        if (this.sliderRef?.current) {
-            this.sliderRef.current.value = 100;
-        }
+        // this.resetTimeParameters(100);
+        // if (this.sliderRef?.current) {
+        //     this.sliderRef.current.value = 100;
+        // }
     }
 
     setAutoPlay(flag) {

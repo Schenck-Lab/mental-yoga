@@ -89,10 +89,10 @@ export default class NonCubeController {
             return this.rigSlots.every((e) => currFace[e]);
         });
         if (!this.rigRefsReady) {
-            console.warn('[Loading rig refs...]');
+            //console.warn('[Loading rig refs...]');
             return;
         }
-        console.log('[Rig Refs Check: Passed]');
+        //console.log('[Rig Refs Check: Passed]');
     }         
 
     initCube() {
@@ -103,11 +103,11 @@ export default class NonCubeController {
         this.root.current.position.set(...init.pos);
         
         this.init = true;
-        console.log('[Cube Init: done]');
+        //console.log('[Cube Init: done]');
     }
 
     setVisible(vis=true) {
-        console.log(`receive vis: ${vis}`);
+        //console.log(`receive vis: ${vis}`);
         
         if (vis === false) {
             this.visible = vis;
@@ -136,7 +136,7 @@ export default class NonCubeController {
     attachSliderRef(sliderRef) {
         if (sliderRef && this.sliderRef !== sliderRef) {
             this.sliderRef = sliderRef;
-            console.log('[sliderRef attached.]');
+            //console.log('[sliderRef attached.]');
         }
     }
 
@@ -339,7 +339,7 @@ export default class NonCubeController {
             const childGroup = this.faceRigs?.[cFace]?.face?.current;
     
             if (!parentEdgeGroup || !childGroup) {
-                console.warn(`Failed to rebind ${cFace} to ${pFace}.`);
+                //console.warn(`Failed to rebind ${cFace} to ${pFace}.`);
                 return;
             }
             parentEdgeGroup.add(childGroup);

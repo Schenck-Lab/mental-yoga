@@ -4,7 +4,7 @@ import { HALF_UNIT } from '../cubenet/cubeThreeModel';
 
 
 const p0 = [0,HALF_UNIT,0];
-const p1 = [0,HALF_UNIT + 1,0];
+const p1 = [0,HALF_UNIT + 1.25,0];
 const p2 = [0,HALF_UNIT + 1.5,0];
 
 export const EXPERIMENT_PROBBLEM_SET = [

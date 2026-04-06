@@ -3,8 +3,10 @@ import { useAppContext } from '../context/AppContext';
 import { FACE_LABEL } from '../cubenet/cubeSpec';
 import { HALF_UNIT } from '../cubenet/cubeThreeModel';
 import { useFrame } from '@react-three/fiber';
+import { CUBE_ID } from './cubeCharacters';
 import { _render_shout_ } from '../utils/utils';
 import Face from './Face';
+import BoxPosIndicator from './cubeSkins/BoxPosIndicator';
 
 
 function FoldableCube({ cubeId }) {
@@ -30,6 +32,9 @@ function FoldableCube({ cubeId }) {
             {Object.keys(FACE_LABEL).map((label) => (
                 <Face key={label} cubeId={cubeId} label={label} />
             ))}
+            {(cubeId === CUBE_ID.EVILEYE_STATIC || cubeId === CUBE_ID.ICEBOX) && (
+                <BoxPosIndicator />
+            )}
         </group>
     );
 }

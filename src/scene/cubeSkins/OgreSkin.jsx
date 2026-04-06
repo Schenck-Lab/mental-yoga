@@ -205,20 +205,20 @@ function Head({cubeId}) {
     const headFollow = useRef(true);
 
     /* Temp test code */
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'f') {
-                headFollow.current = !headFollow.current;
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
+    // useEffect(() => {
+    //     const handleKeyDown = (event) => {
+    //         if (event.key === 'f') {
+    //             headFollow.current = !headFollow.current;
+    //         }
+    //     };
+    //     window.addEventListener('keydown', handleKeyDown);
 
-        // Cleanup when component unmounts
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    // eslint-disable-next-line
-    }, []);
+    //     // Cleanup when component unmounts
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyDown);
+    //     };
+    // // eslint-disable-next-line
+    // }, []);
 
     // Handle local animation
     useFrame((_, delta) => {
@@ -583,23 +583,23 @@ function Arm({label}) {
     const waveHand = useRef(false);
     
     /* Temp test code */
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'w' && label === 'L') {
-                waveHand.current = !waveHand.current;
-            }
-            if (event.key === 'r' && label === 'R') {
-                waveHand.current = !waveHand.current;
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
+    // useEffect(() => {
+    //     const handleKeyDown = (event) => {
+    //         if (event.key === 'w' && label === 'L') {
+    //             waveHand.current = !waveHand.current;
+    //         }
+    //         if (event.key === 'r' && label === 'R') {
+    //             waveHand.current = !waveHand.current;
+    //         }
+    //     };
+    //     window.addEventListener('keydown', handleKeyDown);
 
-        // Cleanup when component unmounts
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    // eslint-disable-next-line
-    }, []);
+    //     // Cleanup when component unmounts
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyDown);
+    //     };
+    // // eslint-disable-next-line
+    // }, []);
 
     const allHandRefsReady = () => handRef.current.flat()
                                                   .every(ref => ref.current);

@@ -138,7 +138,6 @@ export function rebuildRigHierarchy(ctrl) {
 }
 
 export function updateT100FromDelta(ctrl, delta) {
-    console.log(delta, ctrl.t100, ctrl.p200);
     const MAX_PROGRESS = 200;
     ctrl.p200 += delta * ctrl.CUBE_NET_ANIMATION_SPEED;
     

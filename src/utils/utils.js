@@ -75,7 +75,7 @@ export function preventArrowKeyDefault(e) {
 
 
 // debug
-const SILENCE = false;
+const SILENCE = true;
 export function _render_shout_(component, message='...', shout=true) {
     if (SILENCE || !shout) return;
     console.log(`-*-[${component}] (${message})`);

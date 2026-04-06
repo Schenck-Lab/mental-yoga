@@ -1,5 +1,5 @@
 // app/src/ui/PlayerSlider.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { preventArrowKeyDefault } from '../utils/utils';
 import { _render_shout_ } from '../utils/utils';
@@ -8,9 +8,14 @@ import './PlayerSlider.css';
 export default function PlayerSlider() {
     _render_shout_('PLayerSlider');
 
-    const { sliderRef, autoPlayRef } = useAppContext();
+    const { sliderRef, autoPlayRef, sys, addGameData } = useAppContext();
     const [autoPlay, setAutoPlay] = useState(false);
     
+    useEffect(() => {
+        setAutoPlay(false);
+    }, [sys.qcode.value]);
+
+
     const sepAndLabel = (
         <div className='playerSlider__sep' >
             <span className='playerSlider__sepText'>Player Controls</span>
@@ -19,6 +24,7 @@ export default function PlayerSlider() {
 
     const handleCheckBox = (e) => {
         const checked = e.target.checked;
+        addGameData(sys, `autoplay_${checked}`);
         setAutoPlay(checked);
     };
 
@@ -35,6 +41,11 @@ export default function PlayerSlider() {
         </label>
     );
 
+    const handleMouseDown = (e) => {
+        const startValue = Number(e.target.value);
+        addGameData(sys, `slider_${startValue}`);
+    };
+
     const slider = (
         <input
             ref={sliderRef}
@@ -46,6 +57,7 @@ export default function PlayerSlider() {
             defaultValue={100}
             disabled={autoPlay}
             onKeyDown={preventArrowKeyDefault}
+            onMouseDown={handleMouseDown}
         />
     );
 

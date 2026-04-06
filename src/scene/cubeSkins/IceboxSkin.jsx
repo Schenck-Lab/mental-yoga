@@ -223,6 +223,7 @@ function IceCream({icecreamRef, label}) {
 }
 
 function Selector({ ctrl, label, rot }) {
+    const { addGameData, sys } = useAppContext();
     const icRef = useRef('FT');
     const selRef = useRef();
 
@@ -264,8 +265,8 @@ function Selector({ ctrl, label, rot }) {
         if (ctrl.interactor.selectionLock) return;
         
         e.stopPropagation();
-        ctrl?.interactor?.onClick?.(label);
-        console.log(`ice_cream @ ${label}`);
+        ctrl?.interactor?.onClick?.(label, addGameData, sys);
+        //console.log(`ice_cream @ ${label}`);
     };
 
     return (

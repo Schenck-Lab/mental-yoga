@@ -18,14 +18,14 @@ export const AppContextProvider = ({ children }) => {
     const lastName = useRef('no_data');
     const email = useRef('no_data');
     const loginTime = useRef('no_data');
-    const summary = useRef({
-        1: ['_','_','_','_','_','_','_','_'], 
-        2: ['_','_','_','_','_','_','_','_'], 
-        3: ['_','_','_','_','_','_','_','_'], 
-        4: ['_','_','_','_','_','_','_','_'], 
-        5: ['_','_','_','_','_','_','_','_'], 
-        6: ['_','_','_','_','_','_','_','_'], 
-    });
+    // const summary = useRef({
+    //     1: ['_','_','_','_','_','_','_','_'], 
+    //     2: ['_','_','_','_','_','_','_','_'], 
+    //     3: ['_','_','_','_','_','_','_','_'], 
+    //     4: ['_','_','_','_','_','_','_','_'], 
+    //     5: ['_','_','_','_','_','_','_','_'], 
+    //     6: ['_','_','_','_','_','_','_','_'], 
+    // });
 
     // CSV Buffers
     const csvMetaBufRef = useRef([]);  // Buffer for metadata
@@ -40,7 +40,7 @@ export const AppContextProvider = ({ children }) => {
         const level = sys.level.ref.current;
         const objQ = parseQcode(sys.qcode.ref.current);
         const qid = objQ.qid;
-        const q_stage = objQ.isSolving ? 'Solving' : 'Replaying';
+        const q_stage = objQ.isIntro ? 'Intro' : (objQ.isSolving ? 'Solving' : 'Replaying');
         csvGameBufRef.current.push([
             ts, timeCT, level, qid, q_stage, clickObj, answer
         ]);
@@ -79,7 +79,7 @@ export const AppContextProvider = ({ children }) => {
     const cubeControllerMap = cubeControllerMapRef.current;
 
     const value = {
-        meta: { pid, firstName, lastName, email, loginTime, summary },
+        meta: { pid, firstName, lastName, email, loginTime },
         sys: { appStage, level, qcode, _runtime_level, _runtime_qcode },
         orbitControlsRef, isCameraRestricted, sliderRef, autoPlayRef,
         cubeControllerMap, levelStartEpochMS,

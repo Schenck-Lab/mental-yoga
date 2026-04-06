@@ -13,26 +13,24 @@ export default function RotationControls() {
     const [disableReset, setDisableReset] = useState(true);
 
     const buttons = [
-        { id: 'ccw', op: 'zp', label: '↺', type: 'rotBtn' },
-        { id: 'up', op: 'xn', label: '↑', type: 'rotBtn' },
-        { id: 'cw', op: 'zn',label: '↻', type: 'rotBtn' },
-        { id: 'random', label: 'Random', type: 'fnBtn' },
+        { id: 'COUNTERCLOCKWISE', op: 'zp', label: '↺', type: 'rotBtn' },
+        { id: 'UP', op: 'xn', label: '↑', type: 'rotBtn' },
+        { id: 'CLOCKWISE', op: 'zn',label: '↻', type: 'rotBtn' },
+        { id: 'RANDOM', label: 'Random', type: 'fnBtn' },
 
-        { id: 'left', op: 'yn', label: '←', type: 'rotBtn' },
-        { id: 'down', op: 'xp', label: '↓', type: 'rotBtn' },
-        { id: 'right', op: 'yp', label: '→', type: 'rotBtn' },
-        { id: 'reset', label: 'Reset', type: 'fnBtn' },
+        { id: 'LEFT', op: 'yn', label: '←', type: 'rotBtn' },
+        { id: 'DOWN', op: 'xp', label: '↓', type: 'rotBtn' },
+        { id: 'RIGHT', op: 'yp', label: '→', type: 'rotBtn' },
+        { id: 'RESET', label: 'Reset', type: 'fnBtn' },
     ];
 
     function handleRotationClick(button) {
         
         if (button.type === 'rotBtn') {
-            //setAnswerSignal(true);
-
             controller.rotateStep(button.op);
             setDisableReset(controller.nextPose === 'TF');
 
-            addGameData(sys, button.op, controller.nextPose);
+            addGameData(sys, button.id, controller.nextPose);
             return;
         }
 

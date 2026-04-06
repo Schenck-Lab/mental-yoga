@@ -35,7 +35,7 @@ export default function Login() {
     };
 
     const goToIntro = () => {
-        sys.appStage.set(APP_STAGE.GAME);
+        sys.appStage.set(APP_STAGE.INTRO);
     };
 
     const clearMessages = () => {
@@ -83,7 +83,7 @@ export default function Login() {
             meta.email.current = cleanEmail;
             meta.loginTime.current = getEpochMS();
 
-            console.log(toTimeCT(meta.loginTime.current));
+            console.log(`Login: ${toTimeCT(meta.loginTime.current)} (Central Time)`);
             //console.log(meta);
 
             goToIntro();

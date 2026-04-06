@@ -59,10 +59,10 @@ export default function CanvasRuntime() {
     const launchQuestion = (lid, qid) => {
         const questionSpec = EXPERIMENT_PROBBLEM_SET[lid][qid]; 
         if (!questionSpec) {
-            console.log(`null questionSpec: ${lid}, ${qid}`);
+            //console.log(`null questionSpec: ${lid}, ${qid}`);
             return;
         }
-        console.log(`launchQuestion: (${lid}, ${qid})`);
+        //console.log(`launchQuestion: (${lid}, ${qid})`);
 
         questionSpec.forEach((spec, index) => {
             const ctrl = cubeControllerMap[spec.cubeId];
@@ -92,9 +92,9 @@ export default function CanvasRuntime() {
         const qcode = sys.qcode.ref.current;
 
         if (signalDetected()) {
-            _displayLevelAndQcode();
+            //_displayLevelAndQcode();
             const { isIntro, qid, isSolving } = parseQcode(qcode);
-            console.log(isIntro, qid, isSolving);
+            //console.log(isIntro, qid, isSolving);
 
             orbitControlsRef.current?.applyCameraRestriction(false);
             cookieShowFace.current = true;

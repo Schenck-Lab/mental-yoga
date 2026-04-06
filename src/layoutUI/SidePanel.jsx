@@ -20,7 +20,6 @@ function LevelIntro() {
     
     const onClick = () => {
         sys.qcode.set(prev => prev + 1);
-
         addGameData(sys, 'Enter Level');
     };
 
@@ -39,12 +38,11 @@ function LevelIntro() {
             <header className='levelIntroPanel__header'>
                 <div className='levelIntroPanel__title'>Introduction</div>
             </header>
-
+            
             <div className='levelIntroPanel__body'>
                 <div>{level.intro}</div>
                 <div className='levelIntroPanel__sep' />
             </div>
-
             {enterLevelButton}
         </section>
     );
@@ -102,7 +100,9 @@ function AnswerPanel({ disabled }) {
 }
 
 function ReviewPanel({ disabled }) {
-    const { sys, levelStartEpochMS, addGameData } = useAppContext();
+    const { sys, levelStartEpochMS, addGameData, autoPlayRef } = useAppContext();
+
+    // 'Next Question' button
     const onClick = () => {
         const levelId = sys.level.value;
         const { qid } = parseQcode(sys.qcode.value);
@@ -110,16 +110,15 @@ function ReviewPanel({ disabled }) {
         // level time check
         const ts = getEpochMS();
         const diff = diffSeconds(levelStartEpochMS.current, ts);
-        const exceedTimeLimit = diff >= LEVEL_TIME_LIMIT_SEC[levelId - 1];
-        const noQuestionInCurrentLevel = qid === EXPERIMENT_PROBBLEM_SET[levelId - 1].length;
+        const exceedTimeLimit = (diff >= LEVEL_TIME_LIMIT_SEC[levelId - 1]);
+        const noQuestionInCurrentLevel = (qid === EXPERIMENT_PROBBLEM_SET[levelId - 1].length);
 
         addGameData(sys, 'Next Question');
         
-        if (exceedTimeLimit) {
-            levelStartEpochMS.current = null;
-        }
         // to next question or level within time limit
         if (exceedTimeLimit || noQuestionInCurrentLevel) {
+            levelStartEpochMS.current = null; // reset timer
+
             if (levelId === 6) {
                 sys.appStage.set(APP_STAGE.UPLOAD);
                 return;

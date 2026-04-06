@@ -299,35 +299,41 @@ class VertexInteractor {
         }
     }
 
-    handleVertexClick(vid) {
+    handleVertexClick(vid, addGameData, sys) {
         if (this.freeze) return;
         if (vid === this.givenLabel) return;
 
         const vertex = this.vertices?.[vid]?.current;
         if (!vertex) return;
 
+        // [_,_] -> [a,_]
         if (this.selectedLabel[0] == null) {
             this.selectedLabel[0] = vid;
             this.#renderSelect(vid);
+            addGameData(sys, vid, `${this.selectedLabel[0]}-${this.selectedLabel[1]}`);
         } 
+        // [a,?] -> [?,_]
         else if (this.selectedLabel[0] == vid) {
             this.selectedLabel[0] = this.selectedLabel[1];
             this.selectedLabel[1] = null;
-            this.#renderDefault(vid);
+            addGameData(sys, vid, `${this.selectedLabel[0]}-${this.selectedLabel[1]}`);
         }
+        // [a,_] -> [a,b]
         else if (this.selectedLabel[1] == null) {
             this.selectedLabel[1] = vid;
-            this.#renderSelect(vid);
+            addGameData(sys, vid, `${this.selectedLabel[0]}-${this.selectedLabel[1]}`);
+        // [a,b] -> [a,_]
         } else if (this.selectedLabel[1] == vid) {
             this.selectedLabel[1] = null;
-            this.#renderDefault(vid);
+            addGameData(sys, vid, `${this.selectedLabel[0]}-${this.selectedLabel[1]}`);
+        // [a,b] -> [b,c]
         } else {
             this.#renderDefault(this.selectedLabel[0]);
             this.selectedLabel[0] = this.selectedLabel[1];
             this.selectedLabel[1] = vid;
-            this.#renderSelect(vid);
+            addGameData(sys, vid, `${this.selectedLabel[0]}-${this.selectedLabel[1]}`);
         }
-        console.log(this.selectedLabel);
+        //console.log(this.selectedLabel);
     }
 
     update() { }
@@ -387,8 +393,9 @@ class IcecreamSelector {
         if (this.hoverLabel === label) this.hoverLabel = null;
     }
 
-    onClick(label) {
+    onClick(label, addGameData, sys) {
         this.activeLabel = label;
+        addGameData(sys, label, label);
     }
 
     update() {

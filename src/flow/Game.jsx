@@ -6,9 +6,12 @@ import SidePanel from '../layoutUI/SidePanel';
 import './Game.css';
 
 export default function Game() {
-    const { sys, weakResetSignal } = useAppContext();
+    const { sys } = useAppContext();
 
+    const DEV_MODE = false;
     useEffect(() => {
+        if (!DEV_MODE) return;
+
         const handleKeyDown = (e) => {
             const key = e.key;
 
@@ -32,7 +35,6 @@ export default function Game() {
                 return;
             }
         };
-
         window.addEventListener('keydown', handleKeyDown);
 
         return () => {

@@ -17,7 +17,7 @@ const vertexSkinPos = {
 
 function VertexSkin({ cubeId, label, ax0, ax1 }) {
     const meshRef = useRef();
-    const { cubeControllerMap } = useAppContext();
+    const { cubeControllerMap, sys, addGameData } = useAppContext();
     const controller = cubeControllerMap[cubeId];
    
     const f0 = FACE_LOCAL_FRAME_MAP[label][ax0];
@@ -50,8 +50,8 @@ function VertexSkin({ cubeId, label, ax0, ax1 }) {
             }}
             onClick={(e) => {
                 e.stopPropagation();
-                controller.interactor.handleVertexClick(id, label);
-                console.log(`Vertex clicked: ${id}`);
+                controller.interactor.handleVertexClick(id, addGameData, sys);
+                //console.log(`Vertex clicked: ${id}`);
             }}
         >
             <cylinderGeometry args={[0.04,0.04,0.08]} />

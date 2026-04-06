@@ -8,7 +8,7 @@ const UPLOAD_TIMEOUT_MS = 20000;
 const VERIFY_DELAY_MS = 2000;
 
 export default function Upload() {
-    const { meta, csvMetaBufRef, csvGameBufRef } = useAppContext();
+    const { meta, csvGameBufRef } = useAppContext();
 
     const [taskDone, setTaskDone] = useState(false);
     const [status, setStatus] = useState('loading');
@@ -164,11 +164,11 @@ export default function Upload() {
 
     const title = 'Uploading Data';
 
-    const subtitle =
-        status === 'success'
-            ? 'Your data has been uploaded successfully. You may now close the page. Thank you for participating.'
-            : 'All questions have been completed. Your data is now being uploaded.';
-
+    const subtitle = {
+        success: 'Your data has been uploaded successfully. You may now close the page. Thank you for participating.',
+        loading: 'All questions have been completed. Your data is now being uploaded. Please wait...',
+    };
+    
     return (
         <section className='uploadPage'>
             <div className='uploadPage__backdrop' />
@@ -179,7 +179,7 @@ export default function Upload() {
                     <h1 className='uploadCard__title'>
                         {status === 'success' ? 'Upload Complete' : title}
                     </h1>
-                    <p className='uploadCard__subtitle'>{subtitle}</p>
+                    <p className='uploadCard__subtitle'>{subtitle[status]}</p>
                 </div>
 
                 {(status === 'timeout' || status === 'error') && (
@@ -196,16 +196,6 @@ export default function Upload() {
                             disabled
                         >
                             Uploading...
-                        </button>
-                    )}
-
-                    {status === 'success' && (
-                        <button
-                            className='uploadCard__button'
-                            type='button'
-                            onClick={() => window.close()}
-                        >
-                            Close Page
                         </button>
                     )}
 
